@@ -8,6 +8,7 @@ models/
 
 # C extensions
 *.so
+!data/eda.csv
 
 # Distribution / packaging
 .Python

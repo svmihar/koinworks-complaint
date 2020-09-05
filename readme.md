@@ -3,6 +3,7 @@ this is basically a classifier turning out text generation
 
 ## datasource
 [from twint raw](https://drive.google.com/file/d/1iUGPIYcZN1WA_sjut1um8AEdF_hniPlh/view?usp=sharing)
+[with all embeddings](https://drive.google.com/drive/folders/1n61FktPgLxVb-GeZ_5l3xSFk_bcMqi7F?usp=sharing)
 
 
 ## real questions
@@ -24,9 +25,11 @@ disease outbreaks?
       - referral tweets (tweets promoting to use certain code to obtain voucher)
       - hyperlinks
     - then save it to `1_koinworks_cleaned.pkl`
-  - [eda.py](./eda.py)
     - implemented:
       - tfidf
+      - custom flair embeddings
+	  	- pretrained on: tweets itself
+	  	- pooled with fasttext, flair embeddings
       - pca
       - umap
     - then save it to `2_koinworks_fix.pkl`
