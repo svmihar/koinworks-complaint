@@ -70,15 +70,13 @@ def preprocess(df):
     return df
 
 
-
-
 def reduce_dim(df):
     X = np.array([a for a in df["tfidf"].values])
     pca = PCA(n_components=2, svd_solver="full")
     um = UMAP(n_components=5, n_neighbors=15, metric="euclidean")
     df["pca"] = [a for a in pca.fit_transform(X)]
     df["umap"] = [a for a in um.fit_transform(X)]
-    print('reducing dimension done')
+    print("reducing dimension done")
     return df
 
 
@@ -89,8 +87,9 @@ def vectorize_tfidf(df):
     dump(v, "./data/tfidf_vectorizer.pkl")
     return df
 
+
 def vectorize_flair(df):
-    df['flair']=df['flair_dataset'].apply(get_tweet_embeddings)
+    df["flair"] = df["flair_dataset"].apply(get_tweet_embeddings)
     return df
 
 
@@ -101,7 +100,7 @@ def embedding_pipeline(df) -> pd.DataFrame:
     return df
 
 
-def write_flair_dataset(flair_dataset: list[str]):
+def write_flair_dataset(flair_dataset: list):
     x, y = train_test_split(flair_dataset)
     y_test, y_val = train_test_split(y)
     with open(data_path / "flair_format/train/train.txt", "w") as f:
@@ -115,8 +114,7 @@ def write_flair_dataset(flair_dataset: list[str]):
             f.writelines(f"{t}\n")
 
 
-
 if __name__ == "__main__":
     df = load_data().pipe(preprocess).pipe(embedding_pipeline).pipe(reduce_dim)
-    write_flair_dataset(df['flair_dataset'].values)
+    write_flair_dataset(df["flair_dataset"].values)
     df.to_pickle(data_path / "1_koinworks_vectorized.pkl")
