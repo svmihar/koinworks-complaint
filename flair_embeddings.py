@@ -13,6 +13,6 @@ def get_tweet_embeddings(tweet: str):
     if tweet:
         tweet_s = Sentence(tweet)
         document_embeddings.embed(tweet_s)
-        return tweet_s.embedding
+        return tweet_s.embedding.cpu().numpy()
     else:
         return None
