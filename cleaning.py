@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import string
 import re
 from umap import UMAP
-from util import data_path, top2vec_model_datapath
+from util import data_path
 import pandas as pd
 from flair_embeddings import get_tweet_embeddings
 
