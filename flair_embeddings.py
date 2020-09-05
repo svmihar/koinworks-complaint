@@ -10,6 +10,9 @@ document_embeddings = DocumentPoolEmbeddings([glove_embedding, flair_embedding_f
 
 
 def get_tweet_embeddings(tweet: str):
-    tweet_s = Sentence(tweet)
-    document_embeddings.embed(tweet_s)
-    return tweet_s.embedding
+    if tweet:
+        tweet_s = Sentence(tweet)
+        document_embeddings.embed(tweet_s)
+        return tweet_s.embedding
+    else:
+        return None
