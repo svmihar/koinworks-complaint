@@ -12,7 +12,8 @@ from sklearn.metrics import silhouette_samples, silhouette_score
 """
 clustering topics
 """
-EMBEDDING_TYPES = ['flair', 'pca', 'umap']
+EMBEDDING_TYPES = ["flair", "pca", "umap"]
+
 
 def get_k_word(tweets: list):
     words = [b for a in tweets for b in a.split()]
@@ -24,7 +25,7 @@ def check_column(column_name, df):
 
 
 def kmeans_(df):
-    for emb in tqdm(EMBEDDING_TYPES, desc='kmeans'):
+    for emb in tqdm(EMBEDDING_TYPES, desc="kmeans"):
         X = np.array([a for a in df[emb].values])
         range_n_cluster = [x for x in range(4, 20, 2)]
         clusters = [KMeans(n_clusters=n) for n in range_n_cluster]
@@ -40,7 +41,7 @@ def kmeans_(df):
 
 
 def dbscan_(df):
-    for emb in tqdm(EMBEDDING_TYPES, desc='dbscan'):
+    for emb in tqdm(EMBEDDING_TYPES, desc="dbscan"):
         X = np.array([a for a in df[emb].values])
         db = DBSCAN(eps=0.005, min_samples=3)  # 3-> 2 * n - 1
         db.fit(X)

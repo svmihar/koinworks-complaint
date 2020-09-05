@@ -69,6 +69,7 @@ def preprocess(df):
     print("preprocess done")
     return df
 
+
 def reduce(X):
     pca = PCA(n_components=2, svd_solver="full")
     um = UMAP(n_components=5, n_neighbors=15, metric="euclidean")
@@ -79,9 +80,9 @@ def reduce(X):
 
 def reduce_dim(df):
     X = np.array([a for a in df["tfidf"].values])
-    df['pca'],df['umap'] = reduce(X)
-    X = np.array([a for a in df['flair'].values])
-    df['pca_flair'],df['umap_flair'] = reduce(X)
+    df["pca"], df["umap"] = reduce(X)
+    X = np.array([a for a in df["flair"].values])
+    df["pca_flair"], df["umap_flair"] = reduce(X)
     print("reducing dimension done")
     return df
 
@@ -101,7 +102,7 @@ def vectorize_flair(df):
 
 def embedding_pipeline(df) -> pd.DataFrame:
     print("vectorizing")
-    df.pipe(vectorize_tfidf)#.pipe(vectorize_flair)
+    df.pipe(vectorize_tfidf)  # .pipe(vectorize_flair)
     print("vectorizing done")
     return df
 
