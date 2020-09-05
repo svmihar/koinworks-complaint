@@ -1,13 +1,14 @@
 from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
 import numpy as np
 from joblib import dump
 from sklearn.feature_extraction.text import TfidfVectorizer
-from top2vec import Top2Vec
 import string
 import re
 from umap import UMAP
-from util import data_path
+from util import data_path, top2vec_model_datapath
 import pandas as pd
+from flair_embeddings import get_tweet_embeddings
 
 
 STOPWORDS = {a.replace("\n", "") for a in (open("stopwords.txt").readlines())}
@@ -69,28 +70,14 @@ def preprocess(df):
     return df
 
 
-def top2vec_vec(df):
-    docs = df["cleaned"].values
-    model = Top2Vec(docs, speed="deep-learn", workers=4)
-    model.save("./models/top2vec.model")
-    # topic_sizes, topic_nums = model.get_topic_sizes()
-    print(
-        f"vocab learned: {len(model.model.wv.vocab.keys())}"
-    )  # kalo terlalu kecil word nya berarti harus diganti parameter sampling sama min_count nya di top2vec.py
-    topic_id = None  # TODO: get topic id per tweet from top2vec
-    tweet_vector = [a for a in model.model.docvecs.vectors_docs]
-    breakpoint()
-    df["doc2vec"] = tweet_vector
-    df["top2vec_id"] = "TBA"
-    return df
 
 
 def reduce_dim(df):
     X = np.array([a for a in df["tfidf"].values])
     pca = PCA(n_components=2, svd_solver="full")
-    # um = UMAP(n_components=5, n_neighbors=15, metric="euclidean")
+    um = UMAP(n_components=5, n_neighbors=15, metric="euclidean")
     df["pca"] = [a for a in pca.fit_transform(X)]
-    # df["umap"] = [a for a in um.fit_transform(X)]
+    df["umap"] = [a for a in um.fit_transform(X)]
     print('reducing dimension done')
     return df
 
@@ -102,14 +89,34 @@ def vectorize_tfidf(df):
     dump(v, "./data/tfidf_vectorizer.pkl")
     return df
 
+def vectorize_flair(df):
+    df['flair']=df['flair_dataset'].apply(get_tweet_embeddings)
+    return df
+
 
 def embedding_pipeline(df) -> pd.DataFrame:
     print("vectorizing")
-    df.pipe(vectorize_tfidf).pipe(top2vec_vec)
+    df.pipe(vectorize_tfidf).pipe(vectorize_flair)
     print("vectorizing done")
     return df
 
 
+def write_flair_dataset(flair_dataset: list[str]):
+    x, y = train_test_split(flair_dataset)
+    y_test, y_val = train_test_split(y)
+    with open(data_path / "flair_format/train/train.txt", "w") as f:
+        for t in flair_dataset:
+            f.writelines(f"{t}\n")
+    with open(data_path / "flair_format/test.txt", "w") as f:
+        for t in y_test:
+            f.writelines(f"{t}\n")
+    with open(data_path / "flair_format/valid.txt", "w") as f:
+        for t in y_val:
+            f.writelines(f"{t}\n")
+
+
+
 if __name__ == "__main__":
     df = load_data().pipe(preprocess).pipe(embedding_pipeline).pipe(reduce_dim)
+    write_flair_dataset(df['flair_dataset'].values)
     df.to_pickle(data_path / "1_koinworks_vectorized.pkl")

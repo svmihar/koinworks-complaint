@@ -1,6 +1,10 @@
 # Koinworks compalints
 this is basically a classifier turning out text generation
 
+## datasource
+[from twint raw](https://drive.google.com/file/d/1iUGPIYcZN1WA_sjut1um8AEdF_hniPlh/view?usp=sharing)
+
+
 ## real questions
 1) What high-level trends can be inferred from Koinworks
 tweets?

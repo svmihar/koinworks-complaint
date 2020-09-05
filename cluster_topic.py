@@ -6,12 +6,10 @@ from util import data_path
 import pandas as pd
 from sklearn.cluster import DBSCAN, KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
-from top2vec import Top2Vec
 
 """
 clustering topics
 """
-
 
 
 def get_k_word(tweets: list):
@@ -39,7 +37,7 @@ def kmeans_(df):
 
 
 def dbscan_(df):
-    X = np.array([a for a in df.umap.values])  # ganti ke umap, n_component=5
+    X = np.array([a for a in df.umap.values])
     db = DBSCAN(eps=0.005, min_samples=3)  # 3-> 2 * n - 1
     db.fit(X)
     labels = db.labels_
