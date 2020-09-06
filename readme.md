@@ -43,6 +43,12 @@ disease outbreaks?
 - train classifier
 - train text generator
 
+## EDA stuff
+- harus ada `eda.csv` yang isinya:
+  - date
+  - complaint / not complaint
+  - topic id per clustering method
+
 ## references
 1. [Exploratory Analysis of Covid-19 Tweets using Topic Modeling, UMAP, and DiGraphs](https://arxiv.org/abs/2005.03082)
 
