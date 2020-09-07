@@ -1,8 +1,9 @@
 from pathlib import Path
 import os
 
-
 data_path = Path("./data")
+model_path = Path("./models/")
+classifier_path = Path("./models/classifier")
 flair_datapath = data_path / "flair_format"
 train_flair_datapath = flair_datapath / "train"
 if not train_flair_datapath.is_dir():

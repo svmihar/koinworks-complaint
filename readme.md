@@ -107,7 +107,7 @@ this is a [pooled document embeddings](https://github.com/flairNLP/flair/blob/ma
 ### flair
 - [x] pretrain with lm-forward + tweets
 - [ ] make tweet encoder
-flair model can be downloaded [here](https://drive.google.com/drive/u/5/folders/1uLGvvNCNAjAeOBPKyMwtLfEErBAsYuMQ)
+flair model can be downloaded [here](https://drive.google.com/uc?id=1pb4JWy4ffUrDfnriAzePOrQmnmsYYPHE)
 ### fasttext-id
 - `WordEmbeddings('id-crawl')`
 
@@ -118,44 +118,79 @@ exhaustive aja
 
 ## classifier
 - train a tf model / fastai model
-- onnx  / fastinference
+- flair model: 
+    - flair_embedding only, rnn (gru): 163M, 83%
+    - flair_embeddings + id-forward: 
+    ``` 
+    By class:
+              precision    recall  f1-score   support
 
-### milvus
-~~[milvus](https://milvus.io/)~~
-- make embedding:
-	- [x] tfidf, done `tfidf.pkl`
-	- [x] fasttext
-	- [x] flairembeddings
-		- ~~ValueError: Found array with dim 3. check_pairwise_arrays expected <= 2. gak tau padahal gak adayang bikin dimensi 3~~ ganti ke scipy
-- gak jadi pake milvus, soalnya dia ternyata framework yang jadi satu sama rest api nya
+         0.0     0.8312    0.7111    0.7665        90
+         1.0     0.6176    0.7636    0.6829        55
+   micro avg     0.7310    0.7310    0.7310       145
+   macro avg     0.7244    0.7374    0.7247       145
+    weighted avg     0.7502    0.7310    0.7348       145
+     samples avg     0.7310    0.7310    0.7310       145
+    ```
+    
+    - flair_embeddings only, rnn(lstm), hidden_layer=3, bidirectional: 
+    ```
+    Results:
+    - F-score (micro) 0.7862
+    - F-score (macro) 0.7791
+    - Accuracy 0.7862
 
-id nya ikut di `0_koinworks_raw.csv` udah dibikin `uuid4` biar gampang bikin indexernya
+    By class:
+                  precision    recall  f1-score   support
 
-## potential complaint topics
-### lda
-1, 29, 7
-- topics covers a range of complaints
-	- cs not replying
-	- website error
-	- app error
-	- **dana gak bisa ditarik**
-	- **tiba tiba tenor berubah**
+             1.0     0.6027    0.9565    0.7395        46
+             0.0     0.9722    0.7071    0.8187        99
 
-### kmeans
-determining k, by using converged silhouette score, `check_topics_clustering.ipynb` on kmeans
-dumb random shit. decided not to use it as a clustering method
-- tested both in tfidf, and flair embeddings
+       micro avg     0.7862    0.7862    0.7862       145
+       macro avg     0.7875    0.8318    0.7791       145
+    weighted avg     0.8550    0.7862    0.7936       145
+     samples avg     0.7862    0.7862    0.7862       145
+     ```
+ 
+     - flair_embeddings only, rnn(lstm), hidden_layer=3, bidrectional [model_link](https://drive.google.com/drive/u/0/folders/19ZG8jF8U9WnAY9gXXtQo42qgsl68XPxD): 
+     ```
+     Results:
+    - F-score (micro) 0.8207
+    - F-score (macro) 0.8197
+    - Accuracy 0.8207
 
-### dbscan
-9, sucks.
+    By class:
+                  precision    recall  f1-score   support
 
-### top2vec
-see /experiments/
+             0.0     0.9559    0.7386    0.8333        88
+             1.0     0.7013    0.9474    0.8060        57
 
-## blog post ideas
-- [ini buat opening](https://twitter.com/pakelagu/status/1292346337803923456)
-	- meme: top: SHARE KODE KW
-	- meme: bottom: KU TERTYPU OLEH KW
+       micro avg     0.8207    0.8207    0.8207       145
+       macro avg     0.8286    0.8430    0.8197       145
+    weighted avg     0.8558    0.8207    0.8226       145
+     samples avg     0.8207    0.8207    0.8207       145
+     ```
+     - document_embeddings = DocumentRNNEmbeddings(tweet_embeddings,  bidirectional = True,  rnn_type='lstm', rnn_layers=2, dropout=.25, hidden_size=256) 
+     ```
+     Results:
+    - F-score (micro) 0.7862
+    - F-score (macro) 0.7666
+    - Accuracy 0.7862
+
+    By class:
+                  precision    recall  f1-score   support
+
+             0.0     0.7879    0.8864    0.8342        88
+             1.0     0.7826    0.6316    0.6990        57
+
+       micro avg     0.7862    0.7862    0.7862       145
+       macro avg     0.7852    0.7590    0.7666       145
+    weighted avg     0.7858    0.7862    0.7811       145
+     samples avg     0.7862    0.7862    0.7862       145
+     
+     ```
+     
+     
 ### extras
 - aplikasinya sempet ilang juga lol  cek id: 517, 529, , cek tanggal, cek sumber
 - dari search twitter sempet peak di 263 tweet di 04-02-2020 dan 09-01-2020
