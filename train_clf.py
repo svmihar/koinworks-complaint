@@ -43,7 +43,7 @@ tweet_embeddings = [FlairEmbeddings('models/best-lm.pt')]
 # 4. initialize document embedding by passing list of word embeddings
 document_embeddings = DocumentRNNEmbeddings(tweet_embeddings, 
                                             bidirectional = True, 
-                                            rnn_type='lstm',
+                                            rnn_type='gru',
                                             rnn_layers=2,
                                             dropout=.25,
                                             hidden_size=256)

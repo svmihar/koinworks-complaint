@@ -189,6 +189,25 @@ exhaustive aja
      samples avg     0.7862    0.7862    0.7862       145
      
      ```
+     - document_embeddings = DocumentRNNEmbeddings(tweet_embeddings,  bidirectional = True,  rnn_type='gru', rnn_layers=2, dropout=.25, hidden_size=256)[model_link](https://drive.google.com/drive/u/0/folders/1mVa-O8KoFqx1Y4X3VgzOlSqGs4eh5s8z)
+     ```
+     Results:
+    - F-score (micro) 0.8414
+    - F-score (macro) 0.8253
+    - Accuracy 0.8414
+
+    By class:
+                  precision    recall  f1-score   support
+
+             1.0     0.7647    0.7800    0.7723        50
+             0.0     0.8830    0.8737    0.8783        95
+
+       micro avg     0.8414    0.8414    0.8414       145
+       macro avg     0.8238    0.8268    0.8253       145
+    weighted avg     0.8422    0.8414    0.8417       145
+     samples avg     0.8414    0.8414    0.8414       145
+     
+     ```
      
      
 ### extras
