@@ -13,3 +13,4 @@ if not train_flair_datapath.is_dir():
 if __name__ == "__main__":
     os.system("rm -rf /tmp/*")
     os.system("rm -rf /root/.flair/embeddings/")
+    os.system("rm -rf /root/ktrain_data")

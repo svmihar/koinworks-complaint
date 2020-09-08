@@ -65,19 +65,37 @@ def train_flair() :
                   patience=5,
                   max_epochs=150)
     
-def plot_top_loss(tweets, model_path='./models/classifier/final-model.pt'): 
+def plot_top_loss(df_path='./data/test.csv', model_path='./models/classifier/final-model.pt'): 
+    from sklearn.metrics import accuracy_score
+    
+    df = pd.read_csv(df_path)
+    #TODO: Check if 'text' is in df.columns
+    tweets = [x for x in df.text.values]
     model = TextClassifier.load(model_path)
     s_tweets = [Sentence(a) for a in tweets]
     model.predict(s_tweets, verbose=True)
-    return [float(x.labels[0].value) for x in s_tweets]
-
-
-if __name__=='__main__'    : 
-    from sklearn.metrics import accuracy_score
-    df = pd.read_csv('./data/test.csv')
-    tweets = [x for x in df.text.values]
     df['pred']= plot_top_loss(tweets)
     score =accuracy_score(df.pred.values, df.label.values) 
     temp_df = df[df['pred']!=df['label']]
     print(score)
     print(temp_df)
+    return [float(x.labels[0].value) for x in s_tweets]
+
+
+def train_ktrain(): 
+    import ktrain
+    from ktrain import text
+    (x_train, y_train), (x_test, y_test), preproc = text.texts_from_csv('./data/train.csv',text_column='text', label_columns='label')
+    model = text.text_classifier('nbsvm', (x_train, y_train), 
+                             preproc=preproc)
+    learner = ktrain.get_learner(model, train_data=(x_train, y_train), val_data=(x_test, y_test))
+    learner.lr_find(suggest=True)
+    grad_lr= learner.lr_estimate()
+    learner.autofit(min(grad_lr), 50)
+    print(learner.view_top_losses(n=5, preproc=preproc))
+    predictor = ktrain.get_predictor(learner.model, preproc)
+    predictor.save('./models/ktrain_classifier')
+
+
+if __name__=='__main__'    : 
+    train_ktrain()
