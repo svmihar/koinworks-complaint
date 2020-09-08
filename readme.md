@@ -168,7 +168,7 @@ exhaustive aja
        micro avg     0.8207    0.8207    0.8207       145
        macro avg     0.8286    0.8430    0.8197       145
     weighted avg     0.8558    0.8207    0.8226       145
-     samples avg     0.8207    0.8207    0.8207       145
+     samples avg     0.8207     0.8207    0.8207       145
      ```
      - document_embeddings = DocumentRNNEmbeddings(tweet_embeddings,  bidirectional = True,  rnn_type='lstm', rnn_layers=2, dropout=.25, hidden_size=256) 
      ```
