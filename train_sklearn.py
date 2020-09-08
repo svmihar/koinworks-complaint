@@ -1,5 +1,5 @@
 import joblib
-from util import load_label, model_path, data_path
+from util import load_label, model_path, data_path, asset_path
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
@@ -11,9 +11,9 @@ from cleaning import s
 @dataclass
 class rf_model:
     vectorizer = joblib.load(
-        data_path / "tfidf_vectorizer.pkl"
+        asset_path / "tfidf_vectorizer.pkl"
     )  # vectorizer dumped on cleaning.py
-    model = joblib.load(model_path / "classifier.pkl")
+    model = joblib.load(asset_path / "classifier.pkl")
 
     def process_tweet(self, tweet):
         return s(tweet)

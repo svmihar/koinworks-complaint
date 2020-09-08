@@ -5,6 +5,7 @@ import os
 
 data_path = Path("./data")
 model_path = Path("./models/")
+asset_path = Path('./asset/')
 classifier_path = Path("./models/classifier")
 flair_datapath = data_path / "flair_format"
 ktrain_model_path = model_path / "ktrain_classifier"

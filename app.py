@@ -4,11 +4,10 @@ import plotly.express as px
 import pandas as pd
 from wordcloud import WordCloud
 from train_sklearn import rf_model
-from util import ktrain_model_path
 
 
 def load_data():
-    df = pd.read_csv("./data/eda.csv")
+    df = pd.read_csv("./asset/eda.csv")
     df.dropna(inplace=True, subset=["cleaned"])
     df["date"] = pd.to_datetime(df["date"])
     df.dropna(inplace=True, subset=["date"])
@@ -83,7 +82,7 @@ def eda(df):
     st.write(chart_trending_complaints(df))
 
 
-def load_sklearn(ktrain_model_path=ktrain_model_path):
+def load_sklearn():
     return load_model()
 
 
