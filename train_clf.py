@@ -88,12 +88,14 @@ def train_ktrain():
     (x_train, y_train), (x_test, y_test), preproc = text.texts_from_csv('./data/train.csv',text_column='text', label_columns='label')
     model = text.text_classifier('nbsvm', (x_train, y_train), 
                              preproc=preproc)
+    import pdb; pdb.set_trace()
     learner = ktrain.get_learner(model, train_data=(x_train, y_train), val_data=(x_test, y_test))
     learner.lr_find(suggest=True)
     grad_lr= learner.lr_estimate()
     learner.autofit(min(grad_lr), 50)
     print(learner.view_top_losses(n=5, preproc=preproc))
     predictor = ktrain.get_predictor(learner.model, preproc)
+    print(predictor.explain('ada dm gitu ya udah udah tanem investasi ga secepatnya giving them benefit of doubt'))
     predictor.save('./models/ktrain_classifier')
 
 
