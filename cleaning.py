@@ -9,7 +9,7 @@ from util import data_path
 import pandas as pd
 try:
     from flair_embeddings import get_tweet_embeddings
-    from umap import
+    from umap import UMAP
 except:
     print('hayo flair nya mana eya ')
     pass
