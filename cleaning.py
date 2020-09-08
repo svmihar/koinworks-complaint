@@ -5,11 +5,11 @@ from joblib import dump
 from sklearn.feature_extraction.text import TfidfVectorizer
 import string
 import re
-from umap import UMAP
 from util import data_path
 import pandas as pd
 try:
     from flair_embeddings import get_tweet_embeddings
+    from umap import
 except:
     print('hayo flair nya mana eya ')
     pass

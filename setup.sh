@@ -12,4 +12,4 @@ headless = true\n\
 port = $PORT\n\
 " > ~/.streamlit/config.toml
 
-pip install -r requirements.txt
+pip install -r requirements.txt -U
