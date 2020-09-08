@@ -3,14 +3,20 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 from wordcloud import WordCloud
+from train_sklearn import rf_model
 
 
 def load_data():
-    df = pd.read_csv("./data/eda.csv")
+    df = pd.read_csv("./asset/eda.csv")
     df.dropna(inplace=True, subset=["cleaned"])
     df["date"] = pd.to_datetime(df["date"])
     df.dropna(inplace=True, subset=["date"])
     return df
+
+
+# @st.cache
+def load_model():
+    return rf_model()
 
 
 @st.cache
@@ -59,18 +65,16 @@ def top_words_per_topic(df):
                 }
             )
     for cluster_method, item in result.items():
-        st.markdown(f'## {cluster_method}')
+        st.markdown(f"## {cluster_method}")
         for x in item:
             st.markdown(f'{x["topic_id"]}: {x["top_words"]}')
-        st.markdown('---')
-
+        st.markdown("---")
 
 
 def eda(df):
     st.header("Analysis")
     st.subheader("wordcloud")
     chart = wordcloud(df)
-    # TODO: add date picker here
     st.image(chart)
     st.header("tweets about koinworks")
     st.write(chart_trending_tweets(df))
@@ -78,15 +82,31 @@ def eda(df):
     st.write(chart_trending_complaints(df))
 
 
+def load_sklearn():
+    return load_model()
+
+
 def classification(df):
-    st.write("TBA")
+    model = load_model()
+    st.header("Koinworks complaint classifier")
+    st.subheader("predict, whether the tweet is a koinwork complaint or not")
+    st.write("you can learn the how it is made here: ")
+    query_tweet = st.text_input("insert a tweet here")
+    if st.button("predict"):
+        hasil = model.predict(query_tweet)
+        st.write(hasil[0])
 
 
 def generation(df):
     st.write("TBA")
 
 
-MENU = {"EDA": eda,'Complaint Topics':top_words_per_topic,"Classification": classification, "Text Generation": generation}
+MENU = {
+    "EDA": eda,
+    "Complaint Topics": top_words_per_topic,
+    "Classification": classification,
+    "Text Generation": generation,
+}
 
 
 def main():
@@ -94,9 +114,9 @@ def main():
     menu_choice = st.sidebar.radio("Menu", list(MENU.keys()))
     st.title("collection of koinworks complaints")
     st.write(df)
-    d= st.date_input('Insert date')
-    if st.button('search by date'):
-        st.write(df[df['date']==d.strftime('%Y-%m-%d')])
+    d = st.date_input("Insert date")
+    if st.button("search by date"):
+        st.write(df[df["date"] == d.strftime("%Y-%m-%d")])
     st.subheader("haha")
     MENU[menu_choice](df)
 
