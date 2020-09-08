@@ -15,7 +15,7 @@ clustering topics
 EMBEDDING_TYPES = ["flair", "pca", "umap"]
 
 
-def get_top_k_word(tweets: list, k: int=10):
+def get_top_k_word(tweets: list, k: int = 10):
     words = [b for a in tweets for b in a.split()]
     return [a[0] for a in Counter(words).most_common(k)]
 

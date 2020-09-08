@@ -8,7 +8,11 @@ import re
 from umap import UMAP
 from util import data_path
 import pandas as pd
-from flair_embeddings import get_tweet_embeddings
+try:
+    from flair_embeddings import get_tweet_embeddings
+except:
+    print('hayo flair nya mana eya ')
+    pass
 
 
 STOPWORDS = {a.replace("\n", "") for a in (open("stopwords.txt").readlines())}
@@ -38,26 +42,27 @@ def is_referral(tweet: str):
     return p
 
 
+def s(tweet: str, remove_stopword: bool = True) -> str:
+    # lowercase
+    tweet_ = tweet.lower()
+    # remove link
+    tweet_ = re.sub(
+        r"""(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""",
+        "",
+        tweet_,
+    )
+    # remove digits
+    for d in UNALLOWED:
+        tweet_ = tweet_.replace(d, "")
+    # remove multiple white space + split
+    tweet_split = [t for t in tweet_.split() if t]
+    if remove_stopword:
+        return " ".join([t for t in tweet_split if t not in STOPWORDS])
+    return " ".join([t for t in tweet_split])
+
+
 def preprocess(df):
     print("cleaning started")
-
-    def s(tweet: str, remove_stopword: bool = True) -> str:
-        # lowercase
-        tweet_ = tweet.lower()
-        # remove link
-        tweet_ = re.sub(
-            r"""(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""",
-            "",
-            tweet_,
-        )
-        # remove digits
-        for d in UNALLOWED:
-            tweet_ = tweet_.replace(d, "")
-        # remove multiple white space + split
-        tweet_split = [t for t in tweet_.split() if t]
-        if remove_stopword:
-            return " ".join([t for t in tweet_split if t not in STOPWORDS])
-        return " ".join([t for t in tweet_split])
 
     df["cleaned"] = df["tweet"].apply(s)
     df["flair_dataset"] = df["tweet"].apply(s, remove_stopword=False)
