@@ -1,4 +1,6 @@
 from cluster_topic import get_top_k_word
+import random
+from text_generator import generator
 import streamlit as st
 import plotly.express as px
 import pandas as pd
@@ -13,11 +15,6 @@ def load_data():
     df["date"] = pd.to_datetime(df["date"])
     df.dropna(inplace=True, subset=["date"])
     return df
-
-
-# @st.cache
-def load_model():
-    return rf_model()
 
 
 @st.cache
@@ -85,12 +82,8 @@ def eda(df):
     st.write(chart_trending_complaints(df))
 
 
-def load_sklearn():
-    return load_model()
-
-
 def classification(df):
-    model = load_model()
+    model = rf_model()
     # TODO: explaining what's the model and how it predicts
     st.header("Koinworks complaint classifier")
     st.subheader("predict, whether the tweet is a koinwork complaint or not")
@@ -100,9 +93,24 @@ def classification(df):
         hasil = model.predict(query_tweet)
         st.write(hasil[0])
 
+def random_uppercase(s):
+    chars =  list(s)
+    uppercase = random.sample([x for x in range(len(chars))], random.randint(0, len(chars)-1))
+    for u in uppercase:
+        chars[u] = chars[u].upper()
+    return ''.join(chars)
+
 
 def generation(df):
-    st.write("TBA")
+    # TODO: make penjelasan buat markov chain nya
+    st.title('Complaint generator')
+    st.write("because of the abundant size of complaints, and always recuring 'tEmPlaTE ANswEr' from @koinworks account, why don't we also make a template question, better yet let's make a markov chain so that the template can be generated based on past complaints!")
+    model = generator()
+    if st.button('generate complaint'):
+        generated_tweet=  model.generate()
+        splitted = generated_tweet.split()
+        uppered = ' '.join([random_uppercase(s) for s in splitted])
+        st.title(uppered)
 
 
 MENU = {
