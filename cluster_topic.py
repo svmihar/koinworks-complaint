@@ -12,7 +12,7 @@ from sklearn.metrics import silhouette_samples, silhouette_score
 """
 clustering topics
 """
-EMBEDDING_TYPES = ["flair", "pca", "umap"]
+EMBEDDING_TYPES = ["pca", "umap"]
 
 
 def get_top_k_word(tweets: list, k: int = 10):
@@ -49,26 +49,6 @@ def dbscan_(df):
         df[f"dbscan_{emb}"] = labels
         print(f"dbscan n_cluster {len(set(labels))}")
     return df
-
-
-# def lda_method(df):
-#     """ CANNOT RETRIEVE THE TOPIC ID"""
-#     tweets = df.cleaned.values
-#     tm = ktrain.text.get_topic_model(tweets, n_topics=None, n_features=10000)
-#     tm.print_topics(show_counts=True)
-#     # precompute doc matrix (isinya probability ditribution)
-#     tm.build(tweets, threshold=0)  # 0 karena ada range_id yang harus persistent
-#     tweet_docs = tm.get_docs()
-#     assert len(tweets) == len(tweet_docs)
-#     topic_selection = input("select your input here (1 2 3 ...)\n>")
-#     topic_selection = topic_selection.split()
-#     docs = tm.get_docs(topic_ids=topic_selection, rank=True)
-#     df["range_id"] = [x for x in range(len(df))]
-#     keluhan_df = pd.DataFrame(docs, columns=["text", "range_id", "score", "topic_id"])
-#     keluhan_df = keluhan_df[["text", "range_id", "topic_id"]]
-#     df = df.merge(keluhan_df, on="range_id")
-#     df = df[["id", "date", "username", "cleaned", "range_id", "topic_d"]]
-#     df.to_csv("./data/5_keluhan_lda.csv", index=False)
 
 
 if __name__ == "__main__":

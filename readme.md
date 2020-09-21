@@ -89,9 +89,10 @@ mostlikely keluhan keywords:
 ['telat', ]
 
 ## serving frontend
+- [ ] change to flask?
 - classifier:
 	- menentukan apakah tweet itu komplain atau nggak
-		ada penjelasan: ini ada di modulenya ktrain
+	- eli5 the model
 - dashboard:
 	- daily keluhan berapa
 	- top keywords keluhan
@@ -117,11 +118,12 @@ flair model can be downloaded [here](https://drive.google.com/uc?id=1pb4JWy4ffUr
 exhaustive aja
 
 ## classifier
+- fuck flair and ktrain, using good ol sklearn and forest classifier models
 - train a tf model / fastai model
-- flair model: 
+- flair model:
     - flair_embedding only, rnn (gru): 163M, 83%
-    - flair_embeddings + id-forward: 
-    ``` 
+    - flair_embeddings + id-forward:
+    ```
     By class:
               precision    recall  f1-score   support
 
@@ -132,8 +134,8 @@ exhaustive aja
     weighted avg     0.7502    0.7310    0.7348       145
      samples avg     0.7310    0.7310    0.7310       145
     ```
-    
-    - flair_embeddings only, rnn(lstm), hidden_layer=3, bidirectional: 
+
+    - flair_embeddings only, rnn(lstm), hidden_layer=3, bidirectional:
     ```
     Results:
     - F-score (micro) 0.7862
@@ -151,8 +153,8 @@ exhaustive aja
     weighted avg     0.8550    0.7862    0.7936       145
      samples avg     0.7862    0.7862    0.7862       145
      ```
- 
-     - flair_embeddings only, rnn(lstm), hidden_layer=3, bidrectional [model_link](https://drive.google.com/drive/u/0/folders/19ZG8jF8U9WnAY9gXXtQo42qgsl68XPxD): 
+
+     - flair_embeddings only, rnn(lstm), hidden_layer=3, bidrectional [model_link](https://drive.google.com/drive/u/0/folders/19ZG8jF8U9WnAY9gXXtQo42qgsl68XPxD):
      ```
      Results:
     - F-score (micro) 0.8207
@@ -170,7 +172,7 @@ exhaustive aja
     weighted avg     0.8558    0.8207    0.8226       145
      samples avg     0.8207     0.8207    0.8207       145
      ```
-     - document_embeddings = DocumentRNNEmbeddings(tweet_embeddings,  bidirectional = True,  rnn_type='lstm', rnn_layers=2, dropout=.25, hidden_size=256) 
+     - document_embeddings = DocumentRNNEmbeddings(tweet_embeddings,  bidirectional = True,  rnn_type='lstm', rnn_layers=2, dropout=.25, hidden_size=256)
      ```
      Results:
     - F-score (micro) 0.7862
@@ -187,7 +189,7 @@ exhaustive aja
        macro avg     0.7852    0.7590    0.7666       145
     weighted avg     0.7858    0.7862    0.7811       145
      samples avg     0.7862    0.7862    0.7862       145
-     
+
      ```
      - document_embeddings = DocumentRNNEmbeddings(tweet_embeddings,  bidirectional = True,  rnn_type='gru', rnn_layers=2, dropout=.25, hidden_size=256)[model_link](https://drive.google.com/drive/u/0/folders/1mVa-O8KoFqx1Y4X3VgzOlSqGs4eh5s8z)
      ```
@@ -206,10 +208,10 @@ exhaustive aja
        macro avg     0.8238    0.8268    0.8253       145
     weighted avg     0.8422    0.8414    0.8417       145
      samples avg     0.8414    0.8414    0.8414       145
-     
+
      ```
-     
-     
+
+
 ### extras
 - aplikasinya sempet ilang juga lol  cek id: 517, 529, , cek tanggal, cek sumber
 - dari search twitter sempet peak di 263 tweet di 04-02-2020 dan 09-01-2020

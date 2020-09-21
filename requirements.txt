@@ -1,5 +1,6 @@
 sklearn
 pandas
+markovify
 streamlit
 wordcloud
 plotly

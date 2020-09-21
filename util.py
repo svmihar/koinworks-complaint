@@ -5,13 +5,8 @@ import os
 
 data_path = Path("./data")
 model_path = Path("./models/")
-asset_path = Path('./asset/')
+asset_path = Path("./asset/")
 classifier_path = Path("./models/classifier")
-flair_datapath = data_path / "flair_format"
-ktrain_model_path = model_path / "ktrain_classifier"
-train_flair_datapath = flair_datapath / "train"
-if not train_flair_datapath.is_dir():
-    train_flair_datapath.mkdir(parents=True, exist_ok=True)
 
 
 def load_label(split=False):

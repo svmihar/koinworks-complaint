@@ -6,6 +6,7 @@ from wordcloud import WordCloud
 from train_sklearn import rf_model
 
 
+@st.cache(suppress_st_warning=True)
 def load_data():
     df = pd.read_csv("./asset/eda.csv")
     df.dropna(inplace=True, subset=["cleaned"])
@@ -58,6 +59,7 @@ def top_words_per_topic(df):
         for topic_id in df[topic_cluster].unique():
             result[topic_cluster].append(
                 {
+                    "description": "this is a non apt description of this model and embedding",  # TODO: explaining shit about how this clustering and "dimensionality reduction works"
                     "top_words": ", ".join(
                         get_top_k_word(df[df[topic_cluster] == topic_id].cleaned.values)
                     ),
@@ -65,7 +67,7 @@ def top_words_per_topic(df):
                 }
             )
     for cluster_method, item in result.items():
-        st.markdown(f"## {cluster_method}")
+        st.markdown(f"## {cluster_method}\n{item[0]['description']}")
         for x in item:
             st.markdown(f'{x["topic_id"]}: {x["top_words"]}')
         st.markdown("---")
@@ -74,6 +76,7 @@ def top_words_per_topic(df):
 def eda(df):
     st.header("Analysis")
     st.subheader("wordcloud")
+    # TODO:introduction text her
     chart = wordcloud(df)
     st.image(chart)
     st.header("tweets about koinworks")
@@ -88,6 +91,7 @@ def load_sklearn():
 
 def classification(df):
     model = load_model()
+    # TODO: explaining what's the model and how it predicts
     st.header("Koinworks complaint classifier")
     st.subheader("predict, whether the tweet is a koinwork complaint or not")
     st.write("you can learn the how it is made here: ")
@@ -111,13 +115,13 @@ MENU = {
 
 def main():
     df = load_data()
+    df_display = df[["cleaned", "date", "complaint"]]
     menu_choice = st.sidebar.radio("Menu", list(MENU.keys()))
     st.title("collection of koinworks complaints")
-    st.write(df)
+    st.write(df_display)
     d = st.date_input("Insert date")
     if st.button("search by date"):
-        st.write(df[df["date"] == d.strftime("%Y-%m-%d")])
-    st.subheader("haha")
+        st.write(df_display[df_display["date"] == d.strftime("%Y-%m-%d")])
     MENU[menu_choice](df)
 
 

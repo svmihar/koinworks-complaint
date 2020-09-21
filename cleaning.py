@@ -7,12 +7,7 @@ import string
 import re
 from util import data_path
 import pandas as pd
-try:
-    from flair_embeddings import get_tweet_embeddings
-    from umap import UMAP
-except:
-    print('hayo flair nya mana eya ')
-    pass
+from umap import UMAP
 
 
 STOPWORDS = {a.replace("\n", "") for a in (open("stopwords.txt").readlines())}
@@ -65,7 +60,6 @@ def preprocess(df):
     print("cleaning started")
 
     df["cleaned"] = df["tweet"].apply(s)
-    df["flair_dataset"] = df["tweet"].apply(s, remove_stopword=False)
     df["is_ref"] = df["cleaned"].apply(is_referral)
     df["date"] = pd.to_datetime(df["date"])
     df = df[df["is_ref"] == False]
@@ -86,8 +80,6 @@ def reduce(X):
 def reduce_dim(df):
     X = np.array([a for a in df["tfidf"].values])
     df["pca"], df["umap"] = reduce(X)
-    X = np.array([a for a in df["flair"].values])
-    df["pca_flair"], df["umap_flair"] = reduce(X)
     print("reducing dimension done")
     return df
 
@@ -100,30 +92,11 @@ def vectorize_tfidf(df):
     return df
 
 
-def vectorize_flair(df):
-    df["flair"] = df["flair_dataset"].apply(get_tweet_embeddings)
-    return df
-
-
 def embedding_pipeline(df) -> pd.DataFrame:
     print("vectorizing")
     df.pipe(vectorize_tfidf)  # .pipe(vectorize_flair)
     print("vectorizing done")
     return df
-
-
-def write_flair_dataset(flair_dataset: list):
-    x, y = train_test_split(flair_dataset)
-    y_test, y_val = train_test_split(y)
-    with open(data_path / "flair_format/train/train.txt", "w") as f:
-        for t in flair_dataset:
-            f.writelines(f"{t}\n")
-    with open(data_path / "flair_format/test.txt", "w") as f:
-        for t in y_test:
-            f.writelines(f"{t}\n")
-    with open(data_path / "flair_format/valid.txt", "w") as f:
-        for t in y_val:
-            f.writelines(f"{t}\n")
 
 
 if __name__ == "__main__":
