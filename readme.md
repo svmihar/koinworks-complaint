@@ -1,5 +1,17 @@
-# Koinworks compalints
-this is basically a classifier turning out text generation
+---
+title: koinworks-complaint
+date: 2020-09-21
+categories : [projects]
+description: "topic model-labeler-classification-text generation"
+---
+
+[github link](https://github.com/svmihar/koinworks-complaint)
+
+# intro
+main background of this project is just because i keep on getting payment delays, and 1001 reasons why koinworks can't pay. so as a good scientist that i am, i decided to matter to my own hand.
+
+# Koinworks complaints
+classifier + text generator
 
 ## datasource
 [from twint raw](https://drive.google.com/file/d/1iUGPIYcZN1WA_sjut1um8AEdF_hniPlh/view?usp=sharing)
@@ -43,12 +55,6 @@ disease outbreaks?
 - train classifier
 - train text generator
 
-## EDA stuff
-- harus ada `eda.csv` yang isinya:
-  - date
-  - complaint / not complaint
-  - topic id per clustering method
-
 ## references
 1. [Exploratory Analysis of Covid-19 Tweets using Topic Modeling, UMAP, and DiGraphs](https://arxiv.org/abs/2005.03082)
 
@@ -72,8 +78,8 @@ dunno, will do if feeling cute lol
 - [x] top 100 most common trigram
 - [x] wordcloud
 - [x] maybe topic modelling with LDA
-- [ ] distribusi kata yang merupakan keluhan
-- [ ] topic trend in a given time
+- [x] distribusi kata yang merupakan keluhan
+- [x] topic trend in a given time
 - visualize
 	- ~~tfidf~~
 	- ~~kmeans~~
@@ -103,6 +109,12 @@ mostlikely keluhan keywords:
 
 ----
 
+# models
+- [the pipeline for model training are here](https://github.com/svmihar/complaint-classifier)
+- i decided to make another repo so that it can be tracked better using dvc + github workflows
+
+the results below are prelimninary experiments. deployed models used flair embeddings + xgboost.
+
 ## embeddings
 this is a [pooled document embeddings](https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/DOCUMENT_POOL_EMBEDDINGS.md) on:
 ### flair
@@ -112,13 +124,8 @@ flair model can be downloaded [here](https://drive.google.com/uc?id=1pb4JWy4ffUr
 ### fasttext-id
 - `WordEmbeddings('id-crawl')`
 
-## search engine
-### ~~annoy~~
-- ~~make tree~~
-exhaustive aja
-
 ## classifier
-- fuck flair and ktrain, using good ol sklearn and forest classifier models
+- **fuck flair and ktrain, using good ol sklearn and xgboost models**
 - train a tf model / fastai model
 - flair model:
     - flair_embedding only, rnn (gru): 163M, 83%
@@ -210,7 +217,11 @@ exhaustive aja
      samples avg     0.8414    0.8414    0.8414       145
 
      ```
-
+## conclusion
+- most of the borrower can't pay due to pandemic issues
+- koinworks got funded yet can't pay back the lenders
+- most of the tweets are mostly spam, referral links, and promotion.
+- when counting out `@koinworks` account, we can see that most of the tweets are complaints about koinworks can't pay within the due date.
 
 ### extras
 - aplikasinya sempet ilang juga lol  cek id: 517, 529, , cek tanggal, cek sumber
@@ -222,3 +233,4 @@ exhaustive aja
 	- [sumber3](https://internationalfinance.com/koinworks-secures-10-mn-funding-help-smes-raise-funds-online/)
 
 - didanai lagi dong [woah](pic.twitter.com/ZbFjMJ3aSp)
+
